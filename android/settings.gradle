@@ -1,0 +1,3 @@
+rootProject.name = 'happyTripper'
+
+include ':app'
