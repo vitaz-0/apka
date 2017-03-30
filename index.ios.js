@@ -17,7 +17,7 @@ export default class happyTripper extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          This is our new app!
+          This is our new app!!!
         </Text>
       </View>
     );
