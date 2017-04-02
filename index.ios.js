@@ -1,46 +1,55 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import NavigationBar from 'react-native-navbar'
+import AppNavigator from './app/navigation/AppNavigator'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
-  View
+  View,
+  TabBarIOS
 } from 'react-native';
 
 export default class happyTripper extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedTab: "DETAIL"
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          This is our new app!!!
-        </Text>
-      </View>
-    );
+      <TabBarIOS
+        selectedTab={this.state.selectedTab}>
+
+        <Icon.TabBarItemIOS
+          selected={this.state.selectedTab === "DETAIL"}
+          title={`Info`}
+          iconName="info"
+          onPress={() => this.setState({selectedTab: "DETAIL"})}>
+          <AppNavigator
+            initialRoute={{ident: "PeopleIndex"}} />
+        </Icon.TabBarItemIOS>
+
+        <Icon.TabBarItemIOS
+          selected={this.state.selectedTab === "MAP"}
+          title={`Mapa`}
+          iconName="map-o"
+          onPress={() => this.setState({selectedTab: "MAP"})}>
+           <AppNavigator
+            initialRoute={{ident: "PersonShow",
+                           person: {firstName: "jordan", lastName: "leigh", roomNumber: 30}}} />
+        </Icon.TabBarItemIOS>
+
+      </TabBarIOS>
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+
+})
 
 AppRegistry.registerComponent('happyTripper', () => happyTripper);
