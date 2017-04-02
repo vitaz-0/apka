@@ -9,6 +9,7 @@ import {
 
 import PeopleIndexScreen from '../screens/PeopleIndexScreen'
 import PersonShowScreen from '../screens/PersonShowScreen'
+import MapShowScreen from '../screens/MapShowScreen'
 
 class AppNavigator extends Component {
 
@@ -28,6 +29,12 @@ class AppNavigator extends Component {
             {...globalNavigatorProps}
             person={route.person} />
         )
+      case "MapShow":
+          return (
+            <MapShowScreen
+              {...globalNavigatorProps} />
+          )
+
 
       default:
         return (

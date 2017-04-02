@@ -47,6 +47,8 @@ class PersonShowScreen extends Component {
       <ViewContainer style={{backgroundColor: personBackgroundColor}}>
         <StatusBarBackground style={{backgroundColor: "mistyrose"}} />
 
+      
+
         <TouchableOpacity onPress={() => this.props.navigator.pop() }>
           <Icon name="times" size={30} />
         </TouchableOpacity>

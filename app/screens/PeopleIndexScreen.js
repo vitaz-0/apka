@@ -14,6 +14,7 @@ import ViewContainer from '../components/ViewContainer'
 import StatusBarBackground from '../components/StatusBarBackground'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import NavigationBar from 'react-native-navbar'
 
 const people = [
   {firstName: "jordan", lastName: "leigh", roomNumber: 30},
@@ -33,9 +34,22 @@ class PeopleIndexScreen extends Component {
   render() {
     return (
       <ViewContainer>
-        <StatusBarBackground style={{backgroundColor: "mistyrose"}} />
+
+          <StatusBarBackground style={{backgroundColor: "mistyrose"}} />
+
+
+          <NavigationBar
+               title={{ title: 'Detail trasy', tintColor: 'black', }}
+               leftButton={{ title: '<', }}
+               rightButton={{ title: 'Nastavení', }}
+               style={{ backgroundColor: "white" }}
+               statusBar={{ tintColor: "white", }}/>
+
+
+
+
         <ListView
-          style={{marginTop: 100}}
+          style={{marginTop: 0}}
           initialListSize={10}
           dataSource={this.state.peopleDataSource}
           renderRow={(person) => { return this._renderPersonRow(person) }} />
@@ -68,6 +82,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+
+  navbar: {
+    flex: 1,
   },
 
   personRow: {

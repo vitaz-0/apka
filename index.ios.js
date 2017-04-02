@@ -34,13 +34,22 @@ export default class happyTripper extends Component {
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
+          selected={this.state.selectedTab === "PERSON"}
+          title={`Detail`}
+          iconName="user"
+          onPress={() => this.setState({selectedTab: "PERSON"})}>
+           <AppNavigator
+            initialRoute={{ident: "PersonShow",
+                           person: {firstName: "jordan", lastName: "leigh", roomNumber: 30}}} />
+        </Icon.TabBarItemIOS>
+
+        <Icon.TabBarItemIOS
           selected={this.state.selectedTab === "MAP"}
           title={`Mapa`}
           iconName="map-o"
           onPress={() => this.setState({selectedTab: "MAP"})}>
            <AppNavigator
-            initialRoute={{ident: "PersonShow",
-                           person: {firstName: "jordan", lastName: "leigh", roomNumber: 30}}} />
+            initialRoute={{ident: "MapShow"}} />
         </Icon.TabBarItemIOS>
 
       </TabBarIOS>
