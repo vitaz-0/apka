@@ -23,9 +23,6 @@ export default class MapScreen extends Component {
       }
     this.state.markers = this.props.trail.geoPoints.points;
 
-    console.log("MARKERS:");
-    console.log(this.state.markers);
-
   }
 
   setInitialState(){
@@ -42,7 +39,15 @@ showsCompass={true}
 showsScale={true}
 zoomEnabled={true}
 */
+/*
+componentDidMount() {
+      this.mapRef.fitToSuppliedMarkers(
+        someArrayOfMarkers,
+        false, // not animated
+      );
+    }
 
+*/
   render() {
     return (
       <View style={styles.container}>
@@ -50,16 +55,19 @@ zoomEnabled={true}
         provider={PROVIDER_GOOGLE}
         region={this.state.region}
         onRegionChange={this.onRegionChange.bind(this)}
-
+        showsMyLocationButton={true}
+        showsCompass={true}
+        showsScale={true}
+        zoomEnabled={true}
 
 
         >
-        {this.state.markers.map(marker => (
-          <MapView.Marker
-            style={styles.map}
-            key={marker.cislo}
-            coordinate={marker.latLng}
-            title={marker.nazev}/>))}
+          {this.state.markers.map(marker => (
+            <MapView.Marker
+
+              key={marker.cislo}
+              coordinate={marker.latLng}
+              title={marker.nazev}/>))}
       </MapView>
     </View>
     )}
