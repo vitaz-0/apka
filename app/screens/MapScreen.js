@@ -19,7 +19,12 @@ export default class MapScreen extends Component {
       markers: []
     }
 
-    if(this.props.trail.boundaries.hasOwnProperty('sw_lat')){
+    if(
+      this.props.trail.boundaries.hasOwnProperty('sw_lat')
+      && this.props.trail.boundaries.hasOwnProperty('sw_lng')
+      && this.props.trail.boundaries.hasOwnProperty('ne_lat')
+      && this.props.trail.boundaries.hasOwnProperty('ne_lng')
+    ){
       var sw_lat = this.props.trail.boundaries.sw_lat;
       var sw_lng = this.props.trail.boundaries.sw_lng;
       var ne_lat = this.props.trail.boundaries.ne_lat;
