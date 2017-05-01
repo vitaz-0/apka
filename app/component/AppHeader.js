@@ -8,31 +8,33 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class AppHeader extends Component {
 
   constructor(props) {
     super(props)
+    this.props.showSearch
   }
 
   render() {
     return(
-<View style={styles.header}>
+  <View style={styles.header}>
     <View style={styles.headerLeft}>
-        <TouchableOpacity onPress={() => this.props.navigator.pop()} >
-            <Icon name='chevron-left' size={16}/>
+        <TouchableOpacity style={styles.headerLeftArrowBack} onPress={() => this.props.navigator.pop()} >
+            <Icon name='ios-arrow-back' size={23}/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.toggleSearch()}>
+            <Icon name='ios-search' size={23}/>
         </TouchableOpacity>
     </View>
     <View >
         <Text style={styles.headerBodyText}>Happy Tripper</Text>
     </View>
     <View style={styles.headerRight}>
-      <Icon name='bars' size={16}/>
-
+      <Icon name='ios-menu' size={23}/>
     </View>
-</View>
-
+  </View>
   )}
 }
 const styles = StyleSheet.create({
@@ -53,7 +55,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   headerLeft: {
+    flexDirection: 'row',
   //  fontSize: 20
+  },
+  headerLeftArrowBack: {
+    marginRight: 10,
   },
   headerRight: {
   //  fontSize: 20

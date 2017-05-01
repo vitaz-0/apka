@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Navigator
+  Navigator,
+  View
 } from 'react-native';
-
-import { Container, Header, Content, Text } from 'native-base';
 
 import TrailList from './TrailList';
 import TrailDetail from './TrailDetail';
@@ -19,7 +18,8 @@ export default class ScreenNavigator extends Component {
       case "trailList":
         return (
           <TrailList
-            {...globalNavigatorProps} />
+            {...globalNavigatorProps}
+          />
         )
 
       case "trailDetail":

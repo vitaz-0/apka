@@ -19,18 +19,21 @@ import * as global from '../Global';
 import TrailListIconPanel from '../component/TrailListIconPanel';
 import AppHeader from '../component/AppHeader';
 
+import SearchBar from '../component/SearchBar';
+
 export default class TrailList extends Component {
 
   constructor(props) {
     super(props)
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
     this.state = {
-      trailDataSource: ds.cloneWithRows(trailData.TRAIL_LIST.trails)
+      trailDataSource: ds.cloneWithRows(trailData.TRAIL_LIST.trails),
+      showSearch: false,
+      listOffset: 40
     }
   }
 
   _renderView(trail){
-    console.log("Re Render the fucking view: xxxxxxx");
     this.props.navigator.push({
       ident: "trailDetail",
       trail
@@ -41,20 +44,38 @@ export default class TrailList extends Component {
     return(<View key={`${sectionID}-${rowID}`} style={styles.separatorRow}/>)
   }
 
+  toggleSearch(){
+    this.setState({showSearch: this.state.showSearch ? false : true});
+    console.log(this.state.showSearch);
+  }
+
+  clearOffset(){
+    this.setState({listOffset: 0});
+    console.log("clear offset: " + this.state.listOffset);
+  }
+
+  _renderListHeader(){
+    if(this.state.showSearch===true){
+      return (
+        <SearchBar toggleSearch={this.toggleSearch.bind(this)} clearOffset={this.clearOffset.bind(this)}/>
+      )
+    }
+  }
+
   render() {
 
     return (
       <View>
-
-        <AppHeader navigator={this.props.navigator}/>
-
+        <AppHeader  navigator={this.props.navigator} toggleSearch={this.toggleSearch.bind(this)}/>
         <ListView
             //style={{marginTop: 64}}
+            ref={ref => this.listView = ref}
             initialListSize={10}
             dataSource={this.state.trailDataSource}
             renderRow={(trail) => { return this._renderTrailRow(trail) }}
             renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
-
+            renderHeader={() => this._renderListHeader()}
+            //contentOffset={{ x: 0, y: this.state.listOffset }}
           />
       </View>
     )
