@@ -31,6 +31,7 @@ export default class TrailList extends Component {
       showSearch: false,
       listOffset: 40
     }
+    console.log(this.state);
   }
 
   _renderView(trail){
@@ -45,8 +46,24 @@ export default class TrailList extends Component {
   }
 
   toggleSearch(){
-    this.setState({showSearch: this.state.showSearch ? false : true});
-    console.log(this.state.showSearch);
+    //this.state.showSearch=this.state.showSearch ? false : true;
+    //this.state.listOffset = this.state.showSearch ? 0 : 40,
+    this.setState({
+      showSearch: this.state.showSearch ? false : true,
+      listOffset: this.state.showSearch ? 0 : 40,
+    });
+    console.log(this.state);
+
+    //let newDataSource = this.state.trailDataSource;
+    /*newDataSource[indexToUpdate] = {
+      ...oldArray[indexToUpdate],
+      field: newValue,
+    };*/
+    //let newDataSource = oldDataSource.cloneWithRows(newArray);
+
+    /*this.setState({
+      trailDataSource: this.state.trailDataSource.cloneWithRows(newDataSource)
+    });*/
   }
 
   clearOffset(){
@@ -55,11 +72,11 @@ export default class TrailList extends Component {
   }
 
   _renderListHeader(){
-    if(this.state.showSearch===true){
+    //if(this.state.showSearch===true){
       return (
-        <SearchBar toggleSearch={this.toggleSearch.bind(this)} clearOffset={this.clearOffset.bind(this)}/>
+        <SearchBar toggleSearch={this.toggleSearch.bind(this)}/>
       )
-    }
+    //}
   }
 
   render() {
@@ -75,7 +92,7 @@ export default class TrailList extends Component {
             renderRow={(trail) => { return this._renderTrailRow(trail) }}
             renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
             renderHeader={() => this._renderListHeader()}
-            //contentOffset={{ x: 0, y: this.state.listOffset }}
+            contentOffset={{ x: 0, y: this.state.listOffset }}
           />
       </View>
     )
