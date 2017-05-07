@@ -33,7 +33,7 @@ export default class SearchBar extends Component {
         </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.searchBarRight}>
-          <Text style={styles.searchBarRightText} onPress={() => this.props.clearOffset()}>
+          <Text style={styles.searchBarRightText} onPress={() => this.props.cancelSearch()}>
             Cancel
           </Text>
         </TouchableOpacity>

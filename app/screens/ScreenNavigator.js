@@ -19,9 +19,17 @@ export default class ScreenNavigator extends Component {
         return (
           <TrailList
             {...globalNavigatorProps}
-            //showSearch={route.showSearch}
+            showSearch={false}
           />
-        )
+      )
+
+      case "trailListSearch":
+        return (
+          <TrailList
+            {...globalNavigatorProps}
+            showSearch={true}
+          />
+      )
 
       case "trailDetail":
         return (

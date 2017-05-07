@@ -42,7 +42,7 @@ export default class TrailDetail extends Component {
 
     return (
       <View style={styles.container}>
-        <AppHeader navigator={this.props.navigator} />
+        <AppHeader navigator={this.props.navigator} ident={"DETAIL"}/>
         <View style={styles.mainScreen}>
           <AppComponent trail={this.props.trail}/>
         </View>

@@ -14,7 +14,17 @@ export default class AppHeader extends Component {
 
   constructor(props) {
     super(props)
-    this.props.showSearch
+  }
+
+  _searchButtonOnPress(){
+    console.log("IDENT " + this.props.ident);
+    if(this.props.ident === "LIST"){
+      this.props.toggleSearch();
+    } else if(this.props.ident === "DETAIL"){
+      this.props.navigator.push({
+        ident: "trailListSearch"
+      })
+    }
   }
 
   render() {
@@ -24,7 +34,7 @@ export default class AppHeader extends Component {
         <TouchableOpacity style={styles.headerLeftArrowBack} onPress={() => this.props.navigator.pop()} >
             <Icon name='ios-arrow-back' size={23}/>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.toggleSearch()}>
+        <TouchableOpacity onPress={() => this._searchButtonOnPress()}>
             <Icon name='ios-search' size={23}/>
         </TouchableOpacity>
     </View>

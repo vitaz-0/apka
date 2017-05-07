@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Navigator,
   ListView,
+  ScrollView,
   Text
 } from 'react-native';
 
@@ -21,6 +22,8 @@ import AppHeader from '../component/AppHeader';
 
 import SearchBar from '../component/SearchBar';
 
+const SEARCHBAR_OFFSET = 40;
+
 export default class TrailList extends Component {
 
   constructor(props) {
@@ -28,10 +31,11 @@ export default class TrailList extends Component {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
     this.state = {
       trailDataSource: ds.cloneWithRows(trailData.TRAIL_LIST.trails),
-      showSearch: false,
-      listOffset: 40
+      showSearch: this.props.showSearch,
+      listOffset: SEARCHBAR_OFFSET,
+      scrolled: false,
     }
-    console.log(this.state);
+    console.log("props showSearch " + this.props.showSearch);
   }
 
   _renderView(trail){
@@ -46,53 +50,73 @@ export default class TrailList extends Component {
   }
 
   toggleSearch(){
-    //this.state.showSearch=this.state.showSearch ? false : true;
-    //this.state.listOffset = this.state.showSearch ? 0 : 40,
-    this.setState({
-      showSearch: this.state.showSearch ? false : true,
-      listOffset: this.state.showSearch ? 0 : 40,
-    });
-    console.log(this.state);
-
-    //let newDataSource = this.state.trailDataSource;
-    /*newDataSource[indexToUpdate] = {
-      ...oldArray[indexToUpdate],
-      field: newValue,
-    };*/
-    //let newDataSource = oldDataSource.cloneWithRows(newArray);
-
-    /*this.setState({
-      trailDataSource: this.state.trailDataSource.cloneWithRows(newDataSource)
-    });*/
+    console.log("tlist offset: " + this.state.listOffset);
+    // console.log("showsearch: " + this.state.showSearch);
+    if(this.state.listOffset < SEARCHBAR_OFFSET/2){
+      this.refs.list_view.scrollTo({y:SEARCHBAR_OFFSET, animated: false});
+      this.setState({
+        showSearch: false
+      });
+    } else {
+      this.refs.list_view.scrollTo({y:0, animated: false});
+      this.setState({
+        showSearch: true
+      });
+    }
   }
 
-  clearOffset(){
-    this.setState({listOffset: 0});
-    console.log("clear offset: " + this.state.listOffset);
+  cancelSearch(){
+    this.refs.list_view.scrollTo({y:SEARCHBAR_OFFSET, animated: false});
   }
 
   _renderListHeader(){
-    //if(this.state.showSearch===true){
       return (
-        <SearchBar toggleSearch={this.toggleSearch.bind(this)}/>
+        <SearchBar toggleSearch={this.toggleSearch.bind(this)} cancelSearch={this.cancelSearch.bind(this)}/>
       )
-    //}
   }
 
-  render() {
+  _getInitialOffset(){
+    if(this.state.showSearch === false){
+        return ({ x: 0, y: SEARCHBAR_OFFSET});
+    } else {
+      return ({ x: 0, y: 0});
+    }
+  }
 
+  _onScroll(event){
+    console.log("scrolled" + event.nativeEvent.contentOffset.y);
+    this.state.listOffset = event.nativeEvent.contentOffset.y;
+
+
+    // this.setState({
+    //     showSearch : event.nativeEvent.contentOffset.y <= this.SEARCHBAR_OFFSET ? true: false
+    //   });
+  }
+
+  // componentDidMount () {
+  //     this.list_view.scrollTo({y: 100});
+  //   }
+
+  render() {
     return (
       <View>
-        <AppHeader  navigator={this.props.navigator} toggleSearch={this.toggleSearch.bind(this)}/>
-        <ListView
+{/* <TouchableOpacity onPress={this.refs.list_view.scrollTo({y: 0})}>
+  <Text> xxxxxx
+  </Text>
+</TouchableOpacity> */}
+
+        <AppHeader  navigator={this.props.navigator} toggleSearch={this.toggleSearch.bind(this)} ident={"LIST"}/>
+      <ListView
             //style={{marginTop: 64}}
-            ref={ref => this.listView = ref}
+            ref='list_view'
             initialListSize={10}
             dataSource={this.state.trailDataSource}
             renderRow={(trail) => { return this._renderTrailRow(trail) }}
             renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
             renderHeader={() => this._renderListHeader()}
-            contentOffset={{ x: 0, y: this.state.listOffset }}
+            onScroll={(event) => this._onScroll(event)}
+            scrollEventThrottle={500}
+            contentOffset={this._getInitialOffset()}
           />
       </View>
     )
