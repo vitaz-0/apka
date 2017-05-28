@@ -21,55 +21,34 @@ export default class AppHeader extends Component {
     if(this.props.ident === "LIST"){
       this.props.toggleSearch();
     } else if(this.props.ident === "DETAIL"){
-/*
-      this.props.navigator.push({
-        ident: "trailListSearch"
-      })
-*/
-
-
       var routes = this.props.navigator.getCurrentRoutes();
-      console.log("*** ROUTES ***");
-      console.log( routes);
-
-    //  this.props.navigator.resetTo();
-/*
-      this.props.navigator.replacePrevious({
-        ident: "trailListSearch",
-        //showSearch: true
-      })
-      */
-
-    //  console.log("*** ROUTES ***");
-    //  console.log( routes);
-
-      //this.props.navigator.pop();
       this.props.navigator.resetTo({
         ident: "trailListSearch",
-        //showSearch: true
       })
     }
   }
 
   render() {
     return(
-  <View style={styles.header}>
-    <View style={styles.headerLeft}>
-        <TouchableOpacity style={styles.headerLeftArrowBack} onPress={() => this.props.navigator.pop()} >
-            <Icon name='ios-arrow-back' size={23}/>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this._searchButtonOnPress()}>
-            <Icon name='ios-search' size={23}/>
-        </TouchableOpacity>
-    </View>
-    <View >
-        <Text style={styles.headerBodyText}>Happy Tripper</Text>
-    </View>
-    <View style={styles.headerRight}>
-      <Icon name='ios-menu' size={23}/>
-    </View>
-  </View>
-  )}
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+            <TouchableOpacity
+              style={this.props.ident === "LIST" ? styles.headerLeftArrowBackHidden : styles.headerLeftArrowBack}
+              onPress={() => this.props.navigator.pop()}>
+                <Icon name='ios-arrow-back' size={23}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this._searchButtonOnPress()}>
+                <Icon name='ios-search' size={23}/>
+            </TouchableOpacity>
+        </View>
+        <View >
+            <Text style={styles.headerBodyText}>Happy Tripper</Text>
+        </View>
+        <View style={styles.headerRight}>
+          <Icon name='ios-menu' size={23}/>
+        </View>
+      </View>
+    )}
 }
 const styles = StyleSheet.create({
   header: {
@@ -95,7 +74,10 @@ const styles = StyleSheet.create({
   },
   headerLeftArrowBack: {
     marginRight: 10,
-    //display: 'none'
+  },
+  headerLeftArrowBackHidden: {
+    marginRight: 10,
+    display: 'none'
   },
   headerRight: {
   //  fontSize: 20
