@@ -32,10 +32,11 @@ export default class TrailList extends Component {
     this.state = {
       trailDataSource: ds.cloneWithRows(trailData.TRAIL_LIST.trails),
       showSearch: this.props.showSearch,
-      listOffset: SEARCHBAR_OFFSET,
+      listOffset: this.props.showSearch ? 0 : SEARCHBAR_OFFSET,
       scrolled: false,
     }
     console.log("props showSearch " + this.props.showSearch);
+    console.log("state showSearch " + this.state.showSearch);
   }
 
   _renderView(trail){
@@ -50,19 +51,23 @@ export default class TrailList extends Component {
   }
 
   toggleSearch(){
+    console.log("TOGGLE SEARCH");
     console.log("tlist offset: " + this.state.listOffset);
     // console.log("showsearch: " + this.state.showSearch);
     if(this.state.listOffset < SEARCHBAR_OFFSET/2){
       this.refs.list_view.scrollTo({y:SEARCHBAR_OFFSET, animated: false});
       this.setState({
-        showSearch: false
+        showSearch: false,
+        listOffset: SEARCHBAR_OFFSET
       });
     } else {
       this.refs.list_view.scrollTo({y:0, animated: false});
       this.setState({
-        showSearch: true
+        showSearch: true,
+        listOffset: 0
       });
     }
+    console.log("showsearch: " + this.state.showSearch);
   }
 
   cancelSearch(){

@@ -21,33 +21,12 @@ export default class AppHeader extends Component {
     if(this.props.ident === "LIST"){
       this.props.toggleSearch();
     } else if(this.props.ident === "DETAIL"){
-/*
-      this.props.navigator.push({
+
+    /*  this.props.navigator.push({
         ident: "trailListSearch"
-      })
-*/
+      })*/
 
-
-      var routes = this.props.navigator.getCurrentRoutes();
-      console.log("*** ROUTES ***");
-      console.log( routes);
-
-    //  this.props.navigator.resetTo();
-/*
-      this.props.navigator.replacePrevious({
-        ident: "trailListSearch",
-        //showSearch: true
-      })
-      */
-
-    //  console.log("*** ROUTES ***");
-    //  console.log( routes);
-
-      //this.props.navigator.pop();
-      this.props.navigator.resetTo({
-        ident: "trailListSearch",
-        //showSearch: true
-      })
+      this.props.navigator.pop()
     }
   }
 
@@ -90,12 +69,10 @@ const styles = StyleSheet.create({
   },
   headerLeft: {
     flexDirection: 'row',
-    //display: 'none',
   //  fontSize: 20
   },
   headerLeftArrowBack: {
     marginRight: 10,
-    //display: 'none'
   },
   headerRight: {
   //  fontSize: 20

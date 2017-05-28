@@ -20,6 +20,7 @@ export default class ScreenNavigator extends Component {
           <TrailList
             {...globalNavigatorProps}
             showSearch={false}
+            listOffset={40}
           />
       )
 
@@ -28,6 +29,7 @@ export default class ScreenNavigator extends Component {
           <TrailList
             {...globalNavigatorProps}
             showSearch={true}
+            listOffset={0}
           />
       )
 
