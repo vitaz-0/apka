@@ -17,20 +17,51 @@ export default class SearchBar extends Component {
     super(props);
   }
 
+  _setSearchText(event) {
+    let searchText = event.nativeEvent.text;
+    this.setState({searchText});
+  }
+
   render() {
+/*
+return(
+    <View style={styles.searchBarContainer}>
+      <View style={styles.searchBarLeft}>
+        <Icon name='ios-search' style={styles.searchBarLeftIcon} size={20}/>
+        <TextInput
+          style={styles.searchBarLeftText}
+          value={'Hello'}
+        />
+        <TouchableOpacity>
+        <Icon name='ios-close-circle' style={styles.searchBarLeftIcon} size={20} />
+    </TouchableOpacity>
+    </View>
+    <TouchableOpacity style={styles.searchBarRight}>
+      <Text style={styles.searchBarRightText} onPress={() => this.props.cancelSearch()}>
+        Cancel
+      </Text>
+    </TouchableOpacity>
+    </View>
+  )
+  */
     return(
       <View style={styles.searchBarContainer}>
         <View style={styles.searchBarLeft}>
           <Icon name='ios-search' style={styles.searchBarLeftIcon} size={20}/>
+
           <TextInput
             style={styles.searchBarLeftText}
             //value={this.state.searchText}
-            onChange={this.setSearchText.bind(this)}
+            //onChange={this._setSearchText.bind(this)}
+            onChangeText={(text) => this.setState({text})}
             placeholder="Search"
+            //value={'Hello'}
           />
-        <TouchableOpacity>
-          <Icon name='ios-close-circle' style={styles.searchBarLeftIcon} size={20} />
-        </TouchableOpacity>
+
+
+          <TouchableOpacity>
+            <Icon name='ios-close-circle' style={styles.searchBarLeftIcon} size={20} />
+          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.searchBarRight}>
           <Text style={styles.searchBarRightText} onPress={() => this.props.cancelSearch()}>
@@ -39,26 +70,6 @@ export default class SearchBar extends Component {
         </TouchableOpacity>
       </View>
     )
-  }
-
-  setSearchText(event) {
-    let searchText = event.nativeEvent.text;
-    this.setState({searchText});
-
-    /* //NATIVEBASE
-    base.fetch(‘notes’, {
-      context: this,
-      asArray: true,
-      then(data){
-        let filteredData = this.filterNotes(searchText, data);
-        this.setState({
-          dataSource: this.ds.cloneWithRows(filteredData),
-          rawData: data,
-        });
-      }
-    });
-    */
-
   }
 
 }
@@ -90,7 +101,8 @@ const styles = StyleSheet.create({
     //flex: 7,
     //paddingLeft: 30,
     fontSize: 18,
-
+    flex: 1,
+    //backgroundColor: '#ededed',
   },
   searchBarLeftIcon: {
     //flex: 7,
