@@ -1,4 +1,5 @@
-export const APP_BASE_URL = "/Users/vitazak/development/react-native/happyTripper";
+
+import * as firebase from 'firebase';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCfOpjm_kaoKmO4Voki9TIu7E49Gk1tvfQ",
@@ -6,3 +7,8 @@ const firebaseConfig = {
   databaseURL: "https://happytripper-71f4a.firebaseio.com",
   storageBucket: "happytripper-71f4a.appspot.com",
 };
+
+console.log("firebase login");
+firebaseApp = firebase.initializeApp(firebaseConfig);
+
+export default firebaseConfig;

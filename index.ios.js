@@ -24,7 +24,7 @@ export default class happyTripper extends Component {
         //<Test/>
         //<TrailDetail />
 //<MapScreen/>
-    ); 
+    );
   }
 }
 
