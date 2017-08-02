@@ -28,7 +28,7 @@ export default class TrailList extends Component {
 
   constructor(props) {
     super(props)
-    this.dataRef = firebaseApp.database().ref('/trails');
+    this.dataRef = firebaseApp.database().ref('/trails/trailList/list');
     var dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
     this.state = {
       //dataSource: dataSource.cloneWithRows(trailData.TRAIL_LIST.trails),
@@ -60,10 +60,10 @@ export default class TrailList extends Component {
     this.listenForTrails(this.dataRef);
   }
 
-  _renderView(trail){
+  _renderView(trailID){
     this.props.navigator.push({
       ident: "trailDetail",
-      trail
+      trailID
     })
   }
 
@@ -135,7 +135,7 @@ export default class TrailList extends Component {
 
   _renderTrailRow(trail) {
   return (
-    <TouchableOpacity style={styles.personRow} onPress={(event) => this._renderView(trail) }>
+    <TouchableOpacity style={styles.personRow} onPress={(event) => this._renderView(trail.trailItem.trailID) }>
 
         <View style={styles.listItemLeft}>
           <Image  style={{width: 110, height: 100 }} source={{uri: global.APP_BASE_URL+'/app/data/test/photos/'+trail.trailItem.trailPicture}}/>

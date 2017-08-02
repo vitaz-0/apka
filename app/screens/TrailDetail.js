@@ -3,17 +3,15 @@ import {
   AppRegistry,
   StyleSheet,
   Navigator,
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableHighlight
+  View
 } from 'react-native';
+
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text } from 'native-base';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import InfoScreen from '../screens/InfoScreen';
 import MapScreen from '../screens/MapScreen';
-import AppHeader from '../component/AppHeader';
 
 export default class TrailDetail extends Component {
 
@@ -41,82 +39,45 @@ export default class TrailDetail extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        <AppHeader navigator={this.props.navigator} ident={"DETAIL"}/>
-        <View style={styles.mainScreen}>
-          <AppComponent trail={this.props.trail}/>
-        </View>
-        <View style={styles.footer}>
+      <Container>
+               <Header>
+                   <Left>
+                       <Button transparent onPress={() => this.props.navigator.pop()} >
+                           <Icon name='chevron-left' />
+                       </Button>
+                   </Left>
+                   <Body>
+                       <Title>Happy Tripper</Title>
+                   </Body>
+                   <Right>
+                     <Icon name='bars'/>
 
-          <TouchableOpacity
-            style={styles.footerItemContainer}
-            onPress={() => this.setState({selectedTab: 'INFO'})}
-            activeOpacity={1}
-            >
+                   </Right>
+               </Header>
+               <Content>
+                   <AppComponent
+                   trailID={this.props.trailID}/>
 
-            <View style={ this.state.selectedTab==='INFO' ? styles.footerItemPressed : styles.footerItem }>
-              <Icon name='info' size={20}/>
-              <Text style={styles.footerText}>Info</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.footerItemContainer}
-            onPress={() => this.setState({selectedTab: 'MAP'})}
-            activeOpacity={1}
-
-          >
-          <View style={ this.state.selectedTab==='MAP' ? styles.footerItemPressed : styles.footerItem }>
-              <Icon name='map-o' size={20}/>
-              <Text style={styles.footerText}>Mapa</Text>
-          </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+               </Content>
+               <Footer>
+                   <FooterTab>
+                       <Button onPress={() => this.setState({selectedTab: 'INFO'})}>
+                          <Icon name='info' />
+                        <Text>Info</Text>
+                       </Button>
+                       <Button onPress={() => this.setState({selectedTab: 'MAP'})}>
+                          <Icon name='map-o' />
+                        <Text>Mapa</Text>
+                       </Button>
+                   </FooterTab>
+               </Footer>
+           </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column'
-  },
-  mainScreen: {
-    flex: 1,
-    borderBottomColor: '#a7a6ab',
-    borderBottomWidth: 0.5
-  },
-  footer: {
-    flexDirection: 'row',
-    height: 55,
 
-    alignSelf: 'center',
-    backgroundColor: '#f8f8f8',
-  },
-  footerItemContainer: {
-    flexDirection: 'column',
-    flex: 1,
-    justifyContent: 'center'
-  },
-  footerItem: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  footerItemPressed: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: '#ccebff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  footerText:{
-    fontSize: 11,
-    alignItems: 'center',
-  },
 });
 
 module.exports = TrailDetail

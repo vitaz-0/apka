@@ -37,7 +37,7 @@ export default class ScreenNavigator extends Component {
         return (
           <TrailDetail
             {...globalNavigatorProps}
-            trail={route.trail} />
+            trailID={route.trailID} />
         )
 
       default:
