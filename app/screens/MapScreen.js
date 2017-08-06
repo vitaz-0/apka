@@ -12,23 +12,44 @@ const SPACE = 0.01;
 export default class MapScreen extends Component {
   constructor(props) {
     super(props)
-  //  console.log(this.props.trail.b);
+    this.dataRef = firebaseApp.database().ref('/trails/trailGeo/geo').orderByChild("trailID").equalTo(this.props.trailID);
 
     this.state = {
-      region: {},
-      markers: []
+      geoPoints: {
+        boundaries:{},
+        geoPoints: {},
+      },
+      region: {}
     }
+    this.mapRef = null;
+  }
 
+  listenForCoords(dataRef) {
+    dataRef.on('value', (dataSnapshot) => {
+      var coords = [];
+      dataSnapshot.forEach((child) => {
+        coords.push(child.val());
+      });
+      this.setState({
+        geoPoints: coords[0]
+      });
+
+      console.log("geopoints");
+      console.log(this.state.geoPoints);
+    });
+  }
+
+  _setCoords(){
     if(
-      this.props.trail.boundaries.hasOwnProperty('sw_lat')
-      && this.props.trail.boundaries.hasOwnProperty('sw_lng')
-      && this.props.trail.boundaries.hasOwnProperty('ne_lat')
-      && this.props.trail.boundaries.hasOwnProperty('ne_lng')
+      this.state.geoPoints.boundaries.hasOwnProperty('sw_lat')
+      && this.state.geoPoints.boundaries.hasOwnProperty('sw_lng')
+      && this.state.geoPoints.boundaries.hasOwnProperty('ne_lat')
+      && this.state.geoPoints.boundaries.hasOwnProperty('ne_lng')
     ){
-      var sw_lat = this.props.trail.boundaries.sw_lat;
-      var sw_lng = this.props.trail.boundaries.sw_lng;
-      var ne_lat = this.props.trail.boundaries.ne_lat;
-      var ne_lng = this.props.trail.boundaries.ne_lng;
+      var sw_lat = this.state.geoPoints.boundaries.sw_lat;
+      var sw_lng = this.state.geoPoints.boundaries.sw_lng;
+      var ne_lat = this.state.geoPoints.boundaries.ne_lat;
+      var ne_lng = this.state.geoPoints.boundaries.ne_lng;
     } else {
       // DEFAULT FOR CZECH REPUBLIC
       var sw_lng = 12.091389;
@@ -43,27 +64,12 @@ export default class MapScreen extends Component {
         latitudeDelta: ne_lat - sw_lat + SPACE,
         longitudeDelta:ne_lng - sw_lng + SPACE,
     }
-/*
-      console.log("LAT_SW: " + this.state.region.latitude);
-      console.log("LON_SW: " + this.state.region.longitude);
+    console.log("REGION");
+    console.log(this.state.region);
+  }
 
-      console.log("LAT_NE: " + this.props.trail.boundaries.ne_lat);
-      console.log("LON_NE: " + this.props.trail.boundaries.ne_lng);
-
-      console.log("LAT_DELTA: " + this.state.region.latitudeDelta);
-      console.log("LON_DELTA: " + this.state.region.longitudeDelta);
-*/
-    this.state.markers = this.props.trail.geoPoints.points;
-    this.mapRef = null;
-
-    /*
-    var s  = [];
-    for (var mrk = 0; mrk < this.state.markers.length; mrk ++) {
-        s.push(this.state.markers[mrk].latLng);
-        console.log(this.state.markers[mrk].id);
-    }
-    this.latLngArray = s;
-    */
+  componentDidMount() {
+    this.listenForCoords(this.dataRef);
   }
 
   setInitialState(){
@@ -75,18 +81,12 @@ export default class MapScreen extends Component {
   //console.log("region change");
   }
 
-  /*
-  componentDidMount() {
-    console.log("caled: ComponentidMount");
-    console.log(this.mapRef);
-    this.mapRef.fitToSuppliedMarkers(
-      ["MRK_1","MRK_2","MRK_3","MRK_4","MRK_5"],
-      false, // not animated
-    );
-  }
-  */
-
   render() {
+    this._setCoords();
+
+    console.log("REGION RENDER");
+    console.log(this.state.region);
+
     return (
       <View style={styles.container}>
         <MapView style={styles.map}
@@ -101,17 +101,21 @@ export default class MapScreen extends Component {
         showsScale={true}
         zoomEnabled={true}
         >
-          {this.state.markers.map(marker => (
-            <MapView.Marker
 
-              key={marker.cislo}
-              identifier={"MRK_"+marker.cislo}
-              coordinate={marker.latLng}
-              title={marker.nazev}/>))}
       </MapView>
     </View>
     )}
   }
+
+/*
+{this.state.geoPoints.points.map(marker => (
+  <MapView.Marker
+
+    key={marker.cislo}
+    identifier={"MRK_"+marker.cislo}
+    coordinate={marker.latLng}
+    title={marker.nazev}/>))}
+*/
 
   const styles = StyleSheet.create({
   container: {

@@ -8,33 +8,29 @@ import {View, Navigator} from 'react-native';
 export default class InfoScreen extends Component {
   constructor(props) {
     super(props)
-    console.log("props TRAIL iD");
-    console.log(this.props.trailID);
     this.dataRef = firebaseApp.database().ref('/trails/trailDetail/detail').orderByChild("trailID").equalTo(this.props.trailID);
-    //this.dataRef = firebaseApp.database().ref('/trails');
+    this.state = {
+      trailDetail: "",
+    }
   }
 
   listenForDetails(dataRef) {
-  dataRef.on('value', (dataSnapshot) => {
-
-    dataSnapshot.forEach((child) => {
-      this.state.detailItem = child.val();
-    //  details._key = child.key;
-
+    dataRef.on('value', (dataSnapshot) => {
+      var details = [];
+      dataSnapshot.forEach((child) => {
+        details.push(child.val());
+      });
+      this.setState({
+        trailDetail: details[0]
+      });
+      //console.log("trail detail0 ");
+      //console.log(details[0]);
+      //console.log("trail detail1 ");
+      //console.log(this.state.trailDetail);
     });
-
-    console.log("DETAIL ITEM");
-    console.log(this.state.detailItem);
-  /*
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(details)
-    });
-  */
-  });
   }
 
   componentDidMount() {
-    // start listening for firebase updates\
     this.listenForDetails(this.dataRef);
   }
 
@@ -42,12 +38,15 @@ render(){
 return(
 <View>
 <Text>
-  Fucking info screen
+  trail name: {this.state.trailDetail.trailName}
 </Text>
 <Text>
-some text
-
+  trail start: {this.state.trailDetail.trailStart}
 </Text>
+<Text>
+  trail end: {this.state.trailDetail.trailEnd}
+</Text>
+
 </View>
 )
 }
