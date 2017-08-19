@@ -22,7 +22,10 @@ export default class MapScreen extends Component {
         },
       },
       region: {
-
+        //latitude: 50.551747000000006,
+        //latitudeDelta:0.04510200000000197,
+        //longitude:16.0160125,
+        //longitudeDelta: 0.07857899999999794
       }
     }
     this.mapRef = null;
@@ -34,17 +37,18 @@ export default class MapScreen extends Component {
       dataSnapshot.forEach((child) => {
         coords.push(child.val());
       });
+      console.log("COORDS");
+      console.log(coords);
       this.setState({
         geoPoints: coords[0]
       });
-
       console.log("LISTEN FOR COORDS, GEOPOINTS");
       console.log(this.state.geoPoints);
     });
   }
 
-  _setCoords(){
-    if(
+  _setRegion(){
+    /*if(
       this.state.geoPoints.boundaries.hasOwnProperty('sw_lat')
       && this.state.geoPoints.boundaries.hasOwnProperty('sw_lng')
       && this.state.geoPoints.boundaries.hasOwnProperty('ne_lat')
@@ -56,11 +60,18 @@ export default class MapScreen extends Component {
       var ne_lng = this.state.geoPoints.boundaries.ne_lng;
     } else {
       // DEFAULT FOR CZECH REPUBLIC
+      console.log("Using default boundaries");
       var sw_lng = 12.091389;
       var sw_lat = 48.5525;
       var ne_lng = 18.858889;
       var ne_lat = 51.055556;
     }
+    */
+
+    var sw_lat = this.state.geoPoints.boundaries.sw_lat;
+    var sw_lng = this.state.geoPoints.boundaries.sw_lng;
+    var ne_lat = this.state.geoPoints.boundaries.ne_lat;
+    var ne_lng = this.state.geoPoints.boundaries.ne_lng;
 
     this.state.region = {
         latitude:     (ne_lat + sw_lat)/2,
@@ -68,16 +79,16 @@ export default class MapScreen extends Component {
         latitudeDelta: ne_lat - sw_lat + SPACE,
         longitudeDelta:ne_lng - sw_lng + SPACE,
     }
+
     console.log("SET COORDS, REGION");
     console.log(this.state.region);
+
   }
+
 
   componentDidMount() {
+    console.log("Component will mount....");
     this.listenForCoords(this.dataRef);
-  }
-
-  setInitialState(){
-    this.setState(getInitialState());
   }
 
   onRegionChange(region) {
@@ -86,14 +97,11 @@ export default class MapScreen extends Component {
   }
 
   render() {
-    this._setCoords();
-
-    console.log("RENDER, REGION");
-    console.log(this.state.region);
+    this._setRegion();
 
     return (
       <MapView style={styles.map}
-      //ref={(ref) => { this.mapRef = ref }}
+
 
       provider={PROVIDER_GOOGLE}
       initialRegion={this.state.region}
@@ -110,24 +118,15 @@ export default class MapScreen extends Component {
           coordinate={marker.latLng}
           title={marker.nazev}/>))}
       </MapView>
+
     )}
   }
 
   const styles = StyleSheet.create({
-  container: {
-   position: 'absolute',
-   top: 0,
-   left: 0,
-   right: 0,
-   bottom: 0,
-   justifyContent: 'flex-end',
-   alignItems: 'center',
-   borderBottomColor: '#a7a6ab',
-   borderBottomWidth: 0.5,
- },
+
  map: {
    position: 'absolute',
-   top: 0,
+   top: 64,
    left: 0,
    right: 0,
    bottom: 0,

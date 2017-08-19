@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingLeft: 6,
     paddingRight: 6,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#a7a6ab',
+    borderTopWidth: 0.5,
+    borderTopColor: '#a7a6ab',
     //elevation: 3,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -55,10 +55,12 @@ const styles = StyleSheet.create({
   footerLeft: {
     flex: 0.5,
     alignItems: 'center',
+  
   },
   footerRight: {
     flex: 0.5,
     alignItems: 'center',
+
   }
 });
 

@@ -51,7 +51,7 @@ export default class TrailDetail extends Component {
     return (
       <View style={styles.detailScreen}>
 
-        <AppHeader />
+        <AppHeader navigator={this.props.navigator} ident={"DETAIL"}/>
         <AppComponent trailID={this.props.trailID} style={styles.detail}/>
         <AppFooter selectTab={this._selectTab.bind(this)}/>
 
