@@ -6,12 +6,13 @@ import {
   View
 } from 'react-native';
 
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text } from 'native-base';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import InfoScreen from '../screens/InfoScreen';
 import MapScreen from '../screens/MapScreen';
+//import MapTest from '../screens/MapTest';
+import AppHeader from '../component/AppHeader';
+import AppFooter from '../component/AppFooter';
 
 export default class TrailDetail extends Component {
 
@@ -20,6 +21,15 @@ export default class TrailDetail extends Component {
     this.state = {
       selectedTab: 'INFO'
     }
+  }
+
+  _selectTab(tab){
+    console.log("SELECT TAB");
+    console.log(tab);
+    this.setState({
+      selectedTab: tab,
+    });
+
   }
 
   render() {
@@ -39,45 +49,27 @@ export default class TrailDetail extends Component {
     }
 
     return (
-      <Container>
-               <Header>
-                   <Left>
-                       <Button transparent onPress={() => this.props.navigator.pop()} >
-                           <Icon name='chevron-left' />
-                       </Button>
-                   </Left>
-                   <Body>
-                       <Title>Happy Tripper</Title>
-                   </Body>
-                   <Right>
-                     <Icon name='bars'/>
+      <View style={styles.detailScreen}>
 
-                   </Right>
-               </Header>
-               <Content>
-                   <AppComponent
-                   trailID={this.props.trailID}/>
+        <AppHeader />
+        <AppComponent trailID={this.props.trailID} style={styles.detail}/>
+        <AppFooter selectTab={this._selectTab.bind(this)}/>
 
-               </Content>
-               <Footer>
-                   <FooterTab>
-                       <Button onPress={() => this.setState({selectedTab: 'INFO'})}>
-                          <Icon name='info' />
-                        <Text>Info</Text>
-                       </Button>
-                       <Button onPress={() => this.setState({selectedTab: 'MAP'})}>
-                          <Icon name='map-o' />
-                        <Text>Mapa</Text>
-                       </Button>
-                   </FooterTab>
-               </Footer>
-           </Container>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-
+  detailScreen: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  details: {
+    flex: 1,
+    paddingTop: 10,
+  }
 });
 
 module.exports = TrailDetail

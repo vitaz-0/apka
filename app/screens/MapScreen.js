@@ -17,9 +17,13 @@ export default class MapScreen extends Component {
     this.state = {
       geoPoints: {
         boundaries:{},
-        geoPoints: {},
+        geoPoints: {
+          points: [],
+        },
       },
-      region: {}
+      region: {
+
+      }
     }
     this.mapRef = null;
   }
@@ -34,7 +38,7 @@ export default class MapScreen extends Component {
         geoPoints: coords[0]
       });
 
-      console.log("geopoints");
+      console.log("LISTEN FOR COORDS, GEOPOINTS");
       console.log(this.state.geoPoints);
     });
   }
@@ -64,7 +68,7 @@ export default class MapScreen extends Component {
         latitudeDelta: ne_lat - sw_lat + SPACE,
         longitudeDelta:ne_lng - sw_lng + SPACE,
     }
-    console.log("REGION");
+    console.log("SET COORDS, REGION");
     console.log(this.state.region);
   }
 
@@ -84,38 +88,30 @@ export default class MapScreen extends Component {
   render() {
     this._setCoords();
 
-    console.log("REGION RENDER");
+    console.log("RENDER, REGION");
     console.log(this.state.region);
 
     return (
-      <View style={styles.container}>
-        <MapView style={styles.map}
-        //ref={(ref) => { this.mapRef = ref }}
-        //onLayout = {() => this.mapRef.fitToCoordinates(this.latLngArray, { edgePadding: { top: 20, right: 20, bottom: 20, left: 20 }, animated: false })}
+      <MapView style={styles.map}
+      //ref={(ref) => { this.mapRef = ref }}
 
-        provider={PROVIDER_GOOGLE}
-        initialRegion={this.state.region}
-        onRegionChange={this.onRegionChange.bind(this)}
-        showsMyLocationButton={true}
-        showsCompass={true}
-        showsScale={true}
-        zoomEnabled={true}
-        >
-
+      provider={PROVIDER_GOOGLE}
+      initialRegion={this.state.region}
+      onRegionChange={this.onRegionChange.bind(this)}
+      showsMyLocationButton={true}
+      showsCompass={true}
+      showsScale={true}
+      zoomEnabled={true}
+      >
+      {this.state.geoPoints.geoPoints.points.map(marker => (
+        <MapView.Marker
+          key={marker.cislo}
+          identifier={"MRK_"+marker.cislo}
+          coordinate={marker.latLng}
+          title={marker.nazev}/>))}
       </MapView>
-    </View>
     )}
   }
-
-/*
-{this.state.geoPoints.points.map(marker => (
-  <MapView.Marker
-
-    key={marker.cislo}
-    identifier={"MRK_"+marker.cislo}
-    coordinate={marker.latLng}
-    title={marker.nazev}/>))}
-*/
 
   const styles = StyleSheet.create({
   container: {
