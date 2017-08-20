@@ -22,7 +22,8 @@ export default class MapScreen extends Component {
           points: [],
         },
       },
-      region: {}
+      region: {},
+      padding: 0,
     }
     this.mapRef = null;
   }
@@ -48,6 +49,7 @@ export default class MapScreen extends Component {
         coords.push(child.val());
       });
 
+      /* Kdyz chybi markery, nastav prazdnou hodnotu */
       if(!coords[0].hasOwnProperty('geoPoints') || !coords[0].geoPoints.hasOwnProperty('points')){
         console.log("WARNING: Trasa nema markery. ");
         coords[0].geoPoints.points = [];
@@ -93,15 +95,17 @@ export default class MapScreen extends Component {
     return (
       <MapView style={styles.map}
         ref={(ref) => { this.mapRef = ref }}
-
       provider={PROVIDER_GOOGLE}
       initialRegion={this._getInitialRegion()}
       onRegionChange={this.onRegionChange.bind(this)}
 
+      showsUserLocation={true}
       showsMyLocationButton={true}
       showsCompass={true}
       showsScale={true}
       zoomEnabled={true}
+      loadingEnabled={true}
+
       >
 
       {
@@ -114,6 +118,7 @@ export default class MapScreen extends Component {
 
       }
       </MapView>
+
     )
   }
 }
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
     top: 64,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 64,
     borderBottomColor: '#a7a6ab',
     borderBottomWidth: 0.5,
   },
