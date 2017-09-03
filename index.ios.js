@@ -14,7 +14,7 @@ import MapScreen from './app/screens/MapScreen';
 
 //import TrailDetail from './app/screens/TrailDetail';
 //import TrailList from './app/screens/TrailList';
-//import Test from './app/screens/default';
+import Test from './app/screens/Test';
 import ScreenNavigator from './app/screens/ScreenNavigator';
 
 export default class happyTripper extends Component {

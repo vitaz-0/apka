@@ -19,6 +19,7 @@ import * as global from '../Global';
 import TrailListIconPanel from '../component/TrailListIconPanel';
 import AppHeader from '../component/AppHeader';
 import SearchBar from '../component/SearchBar';
+import Search from 'react-native-search-box';
 
 import firebaseConfig from '../data/firebaseConfig';
 
@@ -35,8 +36,12 @@ export default class TrailList extends Component {
       dataSource: dataSource,
       showSearch: this.props.showSearch,
       listOffset: this.props.showSearch ? 0 : SEARCHBAR_OFFSET,
+      //listOffset: SEARCHBAR_OFFSET,
       scrolled: false,
     }
+
+    console.log("constructor: showSearch: " + this.state.showSearch);
+    console.log("constructor: listOffset: " + this.state.listOffset);
   }
 
   listenForTrails(dataRef) {
@@ -58,6 +63,8 @@ export default class TrailList extends Component {
   componentDidMount() {
     // start listening for firebase updates\
     this.listenForTrails(this.dataRef);
+    console.log("Component Did Mount FINISHED. listOffset: " + this.state.listOffset);
+
   }
 
   _renderView(trailID){
@@ -73,15 +80,17 @@ export default class TrailList extends Component {
 
   toggleSearch(){
     console.log("TOGGLE SEARCH");
-    console.log("tlist offset: " + this.state.listOffset);
+    console.log("list offset befre change: " + this.state.listOffset);
 
     if(this.state.listOffset < SEARCHBAR_OFFSET/2){
+      console.log("Setting showsearch to FALSE");
       this.refs.list_view.scrollTo({y:SEARCHBAR_OFFSET, animated: false});
       this.setState({
         showSearch: false,
         listOffset: SEARCHBAR_OFFSET
       });
     } else {
+      console.log("Setting showsearch to TRUE");
       this.refs.list_view.scrollTo({y:0, animated: false});
       this.setState({
         showSearch: true,
@@ -90,14 +99,55 @@ export default class TrailList extends Component {
     }
     console.log("showsearch: " + this.state.showSearch);
   }
-
+/*
   cancelSearch(){
     this.refs.list_view.scrollTo({y:SEARCHBAR_OFFSET, animated: false});
+  }
+*/
+// Important: You must return a Promise
+  _beforeFocus = () => {
+      return new Promise((resolve, reject) => {
+          console.log('Search beforeFocus');
+          resolve();
+      });
+  }
+
+  // Important: You must return a Promise
+  _onFocus = (text) => {
+      return new Promise((resolve, reject) => {
+          console.log('Search onFocus', text);
+          resolve();
+      });
+  }
+
+  // Important: You must return a Promise
+  _afterFocus = () => {
+      return new Promise((resolve, reject) => {
+          console.log('Search afterFocus');
+          resolve();
+      });
+  }
+
+  // Important: You must return a Promise
+  _onCancel = (text) => {
+
+      return new Promise((resolve, reject) => {
+          console.log('Search onCancel', text);
+          this.toggleSearch();
+          resolve();
+      });
   }
 
   _renderListHeader(){
       return (
-        <SearchBar toggleSearch={this.toggleSearch.bind(this)} cancelSearch={this.cancelSearch.bind(this)}/>
+        //<SearchBar toggleSearch={this.toggleSearch.bind(this)} cancelSearch={this.cancelSearch.bind(this)}/>
+        <Search
+         ref="search_box"
+         beforeFocus= {() => this._beforeFocus()}
+         onFocus={() => this._onFocus()}
+         afterFocus= {() => this._afterFocus()}
+         onCancel={() => this._onCancel()}
+       />
       )
   }
 
@@ -110,10 +160,16 @@ export default class TrailList extends Component {
   }
 
   _onScroll(event){
-    this.state.listOffset = event.nativeEvent.contentOffset.y;
+    console.log("scroll: " + event.nativeEvent.contentOffset.y);
+    // Pri uplne prvnimscrollu nedelej nic - jedna se o inicialni nastaveni listu
+    if(this.state.scrolled === true){
+        this.state.listOffset = event.nativeEvent.contentOffset.y;
+    }
+    this.state.scrolled = true;
   }
 
   render() {
+    console.log("RENDER STARTED. ListOffset: " + this.state.listOffset + ", showsearch: "+ this.state.showSearch);
     return (
       <View>
         <AppHeader  navigator={this.props.navigator} toggleSearch={this.toggleSearch.bind(this)} ident={"LIST"}/>

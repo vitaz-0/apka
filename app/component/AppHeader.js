@@ -17,7 +17,7 @@ export default class AppHeader extends Component {
   }
 
   _searchButtonOnPress(){
-    console.log("IDENT " + this.props.ident);
+    //console.log("IDENT " + this.props.ident);
     if(this.props.ident === "LIST"){
       this.props.toggleSearch();
     } else if(this.props.ident === "DETAIL"){

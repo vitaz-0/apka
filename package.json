@@ -11,6 +11,7 @@
     "native-base": "^2.1.2",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
+    "react-native-atoz-listview": "0.0.7",
     "react-native-maps": "^0.13.1",
     "react-native-search-box": "0.0.9"
   },

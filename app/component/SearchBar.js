@@ -12,7 +12,12 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class SearchBar extends Component {
-
+/*
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+UZ SE NEPOUZIVA
+- pouzij react-native-search-box
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
   constructor(props) {
     super(props);
   }
