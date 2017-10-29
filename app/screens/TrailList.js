@@ -18,7 +18,7 @@ import * as trailData from '../data/test/TrailListData';
 import * as global from '../Global';
 import TrailListIconPanel from '../component/TrailListIconPanel';
 import AppHeader from '../component/AppHeader';
-import SearchBar from '../component/SearchBar';
+//import SearchBar from '../component/SearchBar';
 import Search from 'react-native-search-box';
 
 import firebaseConfig from '../data/firebaseConfig';
@@ -40,8 +40,11 @@ export default class TrailList extends Component {
       scrolled: false,
     }
 
-    console.log("constructor: showSearch: " + this.state.showSearch);
-    console.log("constructor: listOffset: " + this.state.listOffset);
+    //console.log("constructor: showSearch: " + this.state.showSearch);
+    //console.log("constructor: listOffset: " + this.state.listOffset);
+
+    this.searchDataRef = firebaseApp.database().ref('/trails/trailIndex/kraje');
+
   }
 
   listenForTrails(dataRef) {
@@ -63,7 +66,7 @@ export default class TrailList extends Component {
   componentDidMount() {
     // start listening for firebase updates\
     this.listenForTrails(this.dataRef);
-    console.log("Component Did Mount FINISHED. listOffset: " + this.state.listOffset);
+    //console.log("Component Did Mount FINISHED. listOffset: " + this.state.listOffset);
 
   }
 
@@ -79,25 +82,25 @@ export default class TrailList extends Component {
   }
 
   toggleSearch(){
-    console.log("TOGGLE SEARCH");
-    console.log("list offset befre change: " + this.state.listOffset);
+    //console.log("TOGGLE SEARCH");
+    //console.log("list offset befre change: " + this.state.listOffset);
 
     if(this.state.listOffset < SEARCHBAR_OFFSET/2){
-      console.log("Setting showsearch to FALSE");
+      //console.log("Setting showsearch to FALSE");
       this.refs.list_view.scrollTo({y:SEARCHBAR_OFFSET, animated: false});
       this.setState({
         showSearch: false,
         listOffset: SEARCHBAR_OFFSET
       });
     } else {
-      console.log("Setting showsearch to TRUE");
+      //console.log("Setting showsearch to TRUE");
       this.refs.list_view.scrollTo({y:0, animated: false});
       this.setState({
         showSearch: true,
         listOffset: 0
       });
     }
-    console.log("showsearch: " + this.state.showSearch);
+    //console.log("showsearch: " + this.state.showSearch);
   }
 /*
   cancelSearch(){
@@ -138,15 +141,31 @@ export default class TrailList extends Component {
       });
   }
 
-  _renderListHeader(){
+  _onChangeText = (text) => {
+    return new Promise((resolve, reject) => {
+        console.log('Search onChangeText', text);
+
+      });
+  }
+
+  _onSearch = (text) => {
+    return new Promise((resolve, reject) => {
+        console.log('Search onSearch', text);
+
+      });
+  }
+
+  _renderSearchBox(){
       return (
         //<SearchBar toggleSearch={this.toggleSearch.bind(this)} cancelSearch={this.cancelSearch.bind(this)}/>
         <Search
          ref="search_box"
          beforeFocus= {() => this._beforeFocus()}
-         onFocus={() => this._onFocus()}
-         afterFocus= {() => this._afterFocus()}
-         onCancel={() => this._onCancel()}
+         onFocus={this._onFocus}
+         afterFocus= {this._afterFocus}
+         onCancel={this._onCancel}
+         onChangeText={this._onChangeText}
+         onSearch={this._onSearch}
        />
       )
   }
@@ -160,7 +179,7 @@ export default class TrailList extends Component {
   }
 
   _onScroll(event){
-    console.log("scroll: " + event.nativeEvent.contentOffset.y);
+    //console.log("scroll: " + event.nativeEvent.contentOffset.y);
     // Pri uplne prvnimscrollu nedelej nic - jedna se o inicialni nastaveni listu
     if(this.state.scrolled === true){
         this.state.listOffset = event.nativeEvent.contentOffset.y;
@@ -169,7 +188,7 @@ export default class TrailList extends Component {
   }
 
   render() {
-    console.log("RENDER STARTED. ListOffset: " + this.state.listOffset + ", showsearch: "+ this.state.showSearch);
+    //console.log("RENDER STARTED. ListOffset: " + this.state.listOffset + ", showsearch: "+ this.state.showSearch);
     return (
       <View>
         <AppHeader  navigator={this.props.navigator} toggleSearch={this.toggleSearch.bind(this)} ident={"LIST"}/>
@@ -180,7 +199,7 @@ export default class TrailList extends Component {
             dataSource={this.state.dataSource}
             renderRow={(trail) => { return this._renderTrailRow(trail) }}
             renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
-            renderHeader={() => this._renderListHeader()}
+            renderHeader={() => this._renderSearchBox()}
             onScroll={(event) => this._onScroll(event)}
             scrollEventThrottle={500}
             contentOffset={this._getInitialOffset()}
